@@ -1,0 +1,43 @@
+{#
+# GNU MediaGoblin -- federated, autonomous media hosting
+# Copyright (C) 2011, 2012 MediaGoblin contributors.  See AUTHORS.
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Affero General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#}
+{% extends "mediagoblin/base.html" %}
+
+{% import "/mediagoblin/utils/wtforms.html" as wtforms_util %}
+
+
+{% block mediagoblin_content %}    
+    <form action="{{ request.urlgen('mediagoblin.search.search') }}" method="POST">
+        {{ wtforms_util.render_divs(form) }}
+        <div class="form_submit_buttons">
+            <input type="submit" value="Go" class="button_form" />
+	        {{ csrf_token }}
+        </div>
+    </form>
+    {% if search_response %}
+        {% if results %}
+            <h2> Results </h2>
+            <ul>
+                {% for result in results %}
+                    <li><a href = "{{ result['url'] }} "> {{ result['slug'] }}</a></li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            No results found for query: {{ query }}
+        {% endif %}
+    {% endif %}
+{% endblock %}    
